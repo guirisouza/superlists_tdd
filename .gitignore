@@ -1,0 +1,13 @@
+.db.sqlite3
+db.sqlite3
+manage.py
+.manage.py
+
+superlists/.db.sqlite3
+superlists/db.sqlite3
+superlists/manage.py
+superlists/.manage.py
+
+venv
+.venv__pycache__
+*.pyc
