@@ -11,3 +11,5 @@ superlists/.manage.py
 venv
 .venv__pycache__
 *.pyc
+
+geckodriver.log
