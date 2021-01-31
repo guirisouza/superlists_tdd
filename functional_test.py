@@ -12,10 +12,12 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_alist_and_retrieve_it_later(self):
-
-
-
         #Edith ouviu falar de uma nova aplicação online interessante para lista de tarefas. Ela decide verificar sua homepage
         self.browser.get('http://localhost:8000')
 
@@ -42,9 +44,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+        text_to_check = '1: Buy peacock feathers'
+        self.check_for_row_in_list_table(row_text=text_to_check)
 
         #ainda continua havendo uma caixa de texto convidando-a a acrrescentar outros
         #item. Ela insere "Use peackock feathers to make a fly" (usar penas de pavãos para dazer um fly - Edith é bem metódica)
@@ -55,10 +56,10 @@ class NewVisitorTest(unittest.TestCase):
 
 
         #A página é atualizada e agora mostra dois itens em sua lista
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
-        self.assertIn('2: Use peacock feather to make a fly', [row.text for row in rows])
+        text_to_check = '2: Use peacock feather to make a fly'
+        self.check_for_row_in_list_table(row_text=text_to_check)
+        text_to_check = '1: Buy peacock feathers'
+        self.check_for_row_in_list_table(row_text=text_to_check)
         self.fail('test finish!')
 
         #edith se pergunta se o site lembrará de sua lista. Então ela nota que o site gerou um url unico para ele -- há um
