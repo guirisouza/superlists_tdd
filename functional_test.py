@@ -21,9 +21,9 @@ class NewVisitorTest(unittest.TestCase):
 
         #ela percebe que o titulo da pagina e o cabeçalho mencionam listas de tarefa (to-do)
         self.assertIn('To-Do lists', self.browser.title)
-        header_text = self.browser.find_element_by_name('h1').text
+        header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertEqual(
-            'To-Do', header_text
+            'Your To-Do list', header_text
         )
 
         #ela é convidada a inserir um item de tarefa imediatamente
@@ -42,16 +42,24 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element_by_id('id_list_tables')
-        rows = table.find_element_by_tag_name('tr')
-        self.assertTrue(
-            any(rows.text == '1: Buy peacock feathers' for row in rows)
-        )
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+
         #ainda continua havendo uma caixa de texto convidando-a a acrrescentar outros
         #item. Ela insere "Use peackock feathers to make a fly" (usar penas de pavãos para dazer um fly - Edith é bem metódica)
-        self.fail('test finish!')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Use peacock feather to ake a fly')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
 
         #A página é atualizada e agora mostra dois itens em sua lista
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+        self.assertIn('2: Use peacock feather to make a fly', [row.text for row in rows])
+        self.fail('test finish!')
 
         #edith se pergunta se o site lembrará de sua lista. Então ela nota que o site gerou um url unico para ele -- há um
         #pequenotexto explicativvo para isso
